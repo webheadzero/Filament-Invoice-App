@@ -80,7 +80,7 @@ class DatabaseSeeder extends Seeder
         Setting::firstOrCreate(
             ['id' => 1],
             [
-                'company_name' => 'Bimo Setiaji L',
+                'company_name' => 'Bima Setiaji L',
                 'company_address' => "Notawang Raya A3 Wonotawang Bangunjiwo Kasihan Bantul",
                 'bank_accounts' => [
                     [

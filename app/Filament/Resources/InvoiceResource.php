@@ -17,6 +17,7 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Actions\ActionGroup;
 
 class InvoiceResource extends Resource
 {
@@ -147,20 +148,32 @@ class InvoiceResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make()->label('')->color('gray'),
-                Tables\Actions\EditAction::make()->label('')->color('gray'),
-                Tables\Actions\DeleteAction::make()->label('')->color('gray'),
-                Action::make('print')
-                    ->label('')
-                    ->icon('heroicon-o-printer')
-                    ->url(fn (Invoice $record): string => route('invoices.print', ['invoice' => $record]))
-                    ->openUrlInNewTab()
-                    ->color('gray'),
-                Action::make('download')
-                    ->label('')
-                    ->icon('heroicon-o-arrow-down-tray')
-                    ->url(fn (Invoice $record): string => route('invoices.download', ['invoice' => $record]))
-                    ->color('gray'),
+                Tables\Actions\ActionGroup::make([
+                    Tables\Actions\ViewAction::make()
+                        ->label('View')
+                        ->color('gray'),
+                    Tables\Actions\EditAction::make()
+                        ->label('Edit')
+                        ->color('gray'),
+                    Tables\Actions\DeleteAction::make()
+                        ->label('Delete')
+                        ->color('gray'),
+                    Action::make('print')
+                        ->label('Print')
+                        ->icon('heroicon-o-printer')
+                        ->url(fn (Invoice $record): string => route('invoices.print', ['invoice' => $record]))
+                        ->openUrlInNewTab()
+                        ->color('gray'),
+                    Action::make('download')
+                        ->label('Download PDF')
+                        ->icon('heroicon-o-arrow-down-tray')
+                        ->url(fn (Invoice $record): string => route('invoices.download', ['invoice' => $record]))
+                        ->color('gray'),
+                ])
+                ->label('')
+                ->icon('heroicon-o-ellipsis-vertical')
+                // ->button()
+                ->color('gray'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
