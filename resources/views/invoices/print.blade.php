@@ -52,6 +52,26 @@
             font-size: 0.9em;
             color: #666;
         }
+        .bank-info {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+        }
+        .bank-info h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .bank-account {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .bank-account:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
         @media print {
             body {
                 padding: 0;
@@ -65,10 +85,8 @@
 <body>
     <div class="invoice-header">
         <div class="company-info">
-            <h2>Your Company Name</h2>
-            <p>123 Business Street</p>
-            <p>City, State, ZIP</p>
-            <p>Phone: (123) 456-7890</p>
+            <h2>{{ $settings->company_name ?? 'Your Company Name' }}</h2>
+            <p>{!! nl2br(e($settings->company_address ?? '123 Business Street\nCity, State, ZIP')) !!}</p>
         </div>
         <div class="invoice-info">
             <h1>INVOICE</h1>
@@ -101,7 +119,7 @@
                 <td>{{ $item['description'] ?? '-' }}</td>
                 <td>{{ $item['quantity'] ?? '0' }}</td>
                 <td>{{ isset($item['unit_price']) ? number_format($item['unit_price'], 2) : '0.00' }}</td>
-                <td>{{ isset($item['total_price']) ? number_format($item['total_price'], 2) : '0.00' }}</td>
+                <td>{{ isset($item['amount']) ? number_format($item['amount'], 2) : '0.00' }}</td>
             </tr>
             @endforeach
         </tbody>
@@ -111,13 +129,21 @@
         <p class="total-amount">Total Amount: {{ number_format($invoice->total_amount ?? 0, 2) }}</p>
     </div>
 
+    @if($settings && $settings->bank_accounts)
+    <div class="bank-info">
+        <h3>Please transfer to:</h3>
+        @foreach($settings->bank_accounts as $account)
+        <div class="bank-account">
+            <p><strong>{{ $account['bank_name'] }}</strong></p>
+            <p>Account Number: {{ $account['account_number'] }}</p>
+            <p>Account Name: {{ $account['account_name'] }}</p>
+        </div>
+        @endforeach
+    </div>
+    @endif
+
     <div class="footer">
         <p>Thank you for your business!</p>
-        <p>This is a computer-generated invoice, no signature required.</p>
-    </div>
-
-    <div class="no-print" style="text-align: center; margin-top: 20px;">
-        <button onclick="window.print()">Print Invoice</button>
     </div>
 </body>
 </html> 

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Invoice;
+use App\Models\Setting;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class InvoiceController extends Controller
 {
@@ -21,7 +23,15 @@ class InvoiceController extends Controller
 
     public function print(Invoice $invoice)
     {
-        $invoice->load('client');
-        return view('invoices.print', compact('invoice'));
+        $settings = Setting::first();
+        return view('invoices.print', compact('invoice', 'settings'));
+    }
+
+    public function download(Invoice $invoice)
+    {
+        $settings = Setting::first();
+        $pdf = PDF::loadView('invoices.print', compact('invoice', 'settings'));
+        
+        return $pdf->download('invoice-' . $invoice->invoice_number . '.pdf');
     }
 } 

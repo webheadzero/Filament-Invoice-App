@@ -5,20 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Client extends Model
+class Setting extends Model
 {
     use HasFactory;
 
     protected $fillable = [
-        'name',
-        'email',
-        'phone',
-        'address',
         'company_name',
+        'company_address',
+        'bank_accounts',
     ];
 
-    public function invoices()
-    {
-        return $this->hasMany(Invoice::class);
-    }
+    protected $casts = [
+        'bank_accounts' => 'array',
+    ];
 }

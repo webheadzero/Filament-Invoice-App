@@ -36,8 +36,6 @@ class ClientResource extends Resource
                     ->columnSpanFull(),
                 Forms\Components\TextInput::make('company_name')
                     ->maxLength(255),
-                Forms\Components\TextInput::make('tax_number')
-                    ->maxLength(255),
             ]);
     }
 

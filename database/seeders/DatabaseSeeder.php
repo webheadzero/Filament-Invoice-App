@@ -6,6 +6,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Invoice;
+use App\Models\Setting;
 
 class DatabaseSeeder extends Seeder
 {
@@ -31,22 +33,63 @@ class DatabaseSeeder extends Seeder
 
         // Sample clients
         Client::firstOrCreate([
-            'email' => 'client1@email.com',
+            'email' => 'letsbakencook.finance@gmail.com',
         ], [
-            'name' => 'PT. Satu Jaya',
-            'phone' => '081234567890',
-            'address' => 'Jl. Mawar No. 1, Jakarta',
-            'company_name' => 'PT. Satu Jaya',
-            'tax_number' => '01.234.567.8-999.000',
+            'name' => 'Shierly Rusli',
+            'phone' => '-',
+            'address' => 'Ruko Alicante A28, Gading Serpong, Kab. Tangerang',
+            'company_name' => 'Letsbakencook',
         ]);
-        Client::firstOrCreate([
-            'email' => 'client2@email.com',
+
+        // Sample invoices
+        $client = Client::where('email', 'letsbakencook.finance@gmail.com')->first();
+        
+        Invoice::firstOrCreate([
+            'invoice_number' => 'INV-2024-0001',
         ], [
-            'name' => 'CV. Dua Makmur',
-            'phone' => '082345678901',
-            'address' => 'Jl. Melati No. 2, Bandung',
-            'company_name' => 'CV. Dua Makmur',
-            'tax_number' => '02.345.678.9-888.000',
+            'client_id' => $client->id,
+            'invoice_date' => now(),
+            'total_amount' => 1500000,
+            'items' => [
+                [
+                    'description' => 'Website Development',
+                    'quantity' => 1,
+                    'unit_price' => 1500000,
+                    'amount' => 1500000
+                ]
+            ]
         ]);
+
+        Invoice::firstOrCreate([
+            'invoice_number' => 'INV-2024-0002',
+        ], [
+            'client_id' => $client->id,
+            'invoice_date' => now()->subDays(15),
+            'total_amount' => 2500000,
+            'items' => [
+                [
+                    'description' => 'Mobile App Development',
+                    'quantity' => 1,
+                    'unit_price' => 2500000,
+                    'amount' => 2500000
+                ]
+            ]
+        ]);
+
+        // Settings
+        Setting::firstOrCreate(
+            ['id' => 1],
+            [
+                'company_name' => 'Bimo Setiaji L',
+                'company_address' => "Notawang Raya A3 Wonotawang Bangunjiwo Kasihan Bantul",
+                'bank_accounts' => [
+                    [
+                        'bank_name' => 'Bank Mandiri',
+                        'account_number' => '1370007207042',
+                        'account_name' => 'Bima Setiaji Laksana',
+                    ],
+                ],
+            ]
+        );
     }
 }

@@ -147,14 +147,20 @@ class InvoiceResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make()->label('')->color('gray'),
+                Tables\Actions\EditAction::make()->label('')->color('gray'),
+                Tables\Actions\DeleteAction::make()->label('')->color('gray'),
                 Action::make('print')
-                    ->label('Print')
+                    ->label('')
                     ->icon('heroicon-o-printer')
                     ->url(fn (Invoice $record): string => route('invoices.print', ['invoice' => $record]))
-                    ->openUrlInNewTab(),
+                    ->openUrlInNewTab()
+                    ->color('gray'),
+                Action::make('download')
+                    ->label('')
+                    ->icon('heroicon-o-arrow-down-tray')
+                    ->url(fn (Invoice $record): string => route('invoices.download', ['invoice' => $record]))
+                    ->color('gray'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

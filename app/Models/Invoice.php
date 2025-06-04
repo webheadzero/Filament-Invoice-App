@@ -13,14 +13,12 @@ class Invoice extends Model
         'client_id',
         'invoice_number',
         'invoice_date',
-        'due_date',
         'total_amount',
         'items',
     ];
 
     protected $casts = [
         'invoice_date' => 'date',
-        'due_date' => 'date',
         'items' => 'array',
         'total_amount' => 'decimal:2',
     ];
@@ -38,9 +36,6 @@ class Invoice extends Model
             // Set default dates if not provided
             if (!$invoice->invoice_date) {
                 $invoice->invoice_date = now();
-            }
-            if (!$invoice->due_date) {
-                $invoice->due_date = now()->addDays(30);
             }
 
             // Generate invoice number if not provided
